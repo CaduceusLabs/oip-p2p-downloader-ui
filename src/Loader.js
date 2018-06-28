@@ -51,9 +51,9 @@ class Loader extends Component {
                                 </div>
                                 <div>
                                     249.6 MB of 3.94 GB (6.19%)
-                                    <div class="progress">
+                                    <div className="progress">
                                         <div
-                                            class="progress-bar"
+                                            className="progress-bar"
                                             role="progressbar"
                                             style={{ width: "6.19%" }}
                                             aria-valuenow="6.19"
@@ -69,8 +69,15 @@ class Loader extends Component {
                                 </div>
                             </td>
                             <td className="Pause">
-                                <img width="30" height="30" src={Pause} />
-                                <img
+                                <img width="30" height="30" src={Pause} 
+                                    width="30"
+                                    height="30"
+                                    src={Pause}
+                                    style={{ marginLeft: "0px" }}
+                                />
+                            </td>
+                            <td className="Settings">
+                                <img width="30" height="30" src={Pause} 
                                     width="30"
                                     height="30"
                                     src={Settings}
@@ -81,26 +88,16 @@ class Loader extends Component {
                     </tbody>
                 </table>
                 <br />
-                <div className="ActiveNode">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 style={{ marginLeft: "20px" }}>
-                                Connected 8 nodes, DL from 7 nodes
-                            </h4>
-                            <p className="Pause" style={{}}>
-                            <img className="float-right"  style={{ marginRight: "5px" }}width="30"height="30"src={Pause} /></p>
-
-                            <p className="Upload" style={{}}>
-                            <img  style={{ marginRight: "5px" }}width="30"height="30"src={Up}/>0.00KB/S</p>
-
-
-                            <p className="Download" style={{}}>
-                            <img style={{ marginRight: "5px" }}width="30"height="30"src={Down}/>2.67MB/S</p>
-                            
-                        </div>
-                    </div>
-                </div>
+                <div className="card" style={{width: "18rem;"}}>
+                 <div className="card-header" style={{marginRight: "10px"}}>
+                 <p className="font-weight-bold">
+                Connected 8 nodes, DL from 7 nodes</p>
+                <img style={{ marginLeft: "10px" }}width="30"height="20"src={Down}/>2.67MB/S
+                <img  style={{ marginLeft: "10px" }}width="30"height="20"src={Up}/>0.00KB/S
+                <img className="float-right"  style={{ marginRight: "5px" }}width="30"height="30"src={Pause} />
             </div>
+    </div>
+</div>
         );
     }
 }
