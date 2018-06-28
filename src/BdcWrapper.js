@@ -39,8 +39,7 @@ class BdcWrapper extends Component {
     { 
         return (
             <div>
-                <Loader artifact={this.state.artifact} />
-                <br/>
+
                 <BulkDownloadContainer artifact={this.state.artifact} />
             </div>
         )

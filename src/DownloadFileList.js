@@ -68,7 +68,7 @@ class DownloadFileList extends Component {
               <input onClick={this.onInputChange} className="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."/>
             </div>
             </th>
-            <td><img width="30" height="30" src={fileImage}/></td>
+            <td><img width="30" height="30" src={fileImage} alt=""/></td>
             <td>{file.getFilename()}</td>
             <td>{file.getType()}</td>
             <td>{filesize(file.getFilesize())} </td>
