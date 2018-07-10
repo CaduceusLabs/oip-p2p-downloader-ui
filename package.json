@@ -7,6 +7,7 @@
     "electron-is-dev": "^0.3.0",
     "filesize": "^3.6.1",
     "oip-js": "^1.1.34",
+    "oip-p2p-downloader": "^1.0.0",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
