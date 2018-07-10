@@ -29,8 +29,6 @@ class AppRoutes extends Component {
     </ul>
   </div>
 </nav>
-        <br />
-        <Route path="/DownloadFileList" render={props => <DownloadFileList Core={this.props.Core}{...props} />} />
 					<Route path="/Bulk" render={props => <BdcWrapper Core={this.props.Core}{...props} />} />
 					 <Route path="/load" render={props => <Loader Core={this.props.Core}{...props} />} />
         
