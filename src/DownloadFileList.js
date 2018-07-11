@@ -40,13 +40,25 @@ class DownloadFileList extends Component {
       var file;
 
       if (this.props.file){
+        console.dir(this.props)
         file = this.props.file;
       } else {
-			  file = new ArtifactFile();
+        console.log("foo")
+        file = new ArtifactFile();
+        file.setFilename("???.???")
+        
+
+
       }
       
-      var extension = this.getExtension(file.getFilename());
-      // console.log(extension)
+      var extension;
+
+     if (file.getFilename() === undefined) {
+       
+     } else { 
+       extension = this.getExtension(file.getFilename())
+     }
+      
 
       var fileImage;
 
@@ -65,7 +77,7 @@ class DownloadFileList extends Component {
         var sizefile = file.getFilesize()
         var stringSize =""
         if (!sizefile) {
-stringSize = "???"
+        stringSize = "???"
         } else {
           stringSize = filesize(sizefile)
         }
