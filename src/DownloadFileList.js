@@ -5,7 +5,7 @@ import Image from './assets/imgs/file-image.svg';
 import Video from './assets/imgs/file-video.svg';
 import Pdf from './assets/imgs/file-pdf.svg';
 import Code from './assets/imgs/file-code.svg';
-import Audio from './assets/imgs/file-code.svg';
+import Audio from './assets/imgs/file-audio.svg';
 import Text from './assets/imgs/file-alt.svg';
 import { ArtifactFile } from 'oip-js';
 import filesize from 'filesize';
@@ -52,14 +52,24 @@ class DownloadFileList extends Component {
 
       if (extension === "mp4" || extension === "flv")
         fileImage = Video;
-      else 
-        fileImage = File;
-
-        if (extension === "jpg" || extension === "png")
+        else if(extension === "jpg" || extension === "png")
           fileImage = Image;
+          else if(extension === "wav" || extension === "mp3")
+          fileImage = Audio;
+          else if(extension === "txt")
+          fileImage = Text;
         else
           fileImage = File;
       
+
+        var sizefile = file.getFilesize()
+        var stringSize =""
+        if (!sizefile) {
+stringSize = "???"
+        } else {
+          stringSize = filesize(sizefile)
+        }
+
 
       return(
         <tr>
@@ -72,7 +82,7 @@ class DownloadFileList extends Component {
             <td><img width="30" height="30" src={fileImage} alt=""/></td>
             <td>{file.getFilename()}</td>
             <td>{file.getType()}</td>
-            <td>{filesize(file.getFilesize())} </td>
+            <td>{stringSize} </td>
           </tr>
         )
     }
