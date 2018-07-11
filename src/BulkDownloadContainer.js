@@ -49,16 +49,16 @@ class BulkDownloadContainer extends Component {
     }
     render(){
         // console.log(this.props.artifact)
-        var art;
+        var value;
 
         if (this.props.artifact){
-            art = this.props.artifact;
+            value = this.props.artifact;
         } else {
-			art = new Artifact();
+			value = new Artifact();
 		}
     
         var selectedFiles = [];
-        var files = art.getFiles();
+        var files = value.getFiles();
 
         var totalDownloadSize = 0;
 
@@ -71,10 +71,11 @@ class BulkDownloadContainer extends Component {
         console.log(this.state)
     
         return(
+            
             <div class="card">
                 <div class="card-header">
-                        <p className="OpenFolder"><img width="30" height="30" src={Folder} style={{marginRight:"10px"}}/>{art.getTitle()}</p>
-                        <p className="ArtDownloadAmount">{art.getFiles().length} {} in Artifact</p>
+                        <p className="OpenFolder"><img width="30" height="30" src={Folder} style={{marginRight:"10px"}}/>{value.getTitle()}</p>
+                        <p className="ArtDownloadAmount">{value.getFiles().length} {} in Artifact</p>
                         <p className="ArtSelectDownload">Selected: {this.state.selectedFiles.length} file(s) | {filesize(totalDownloadSize)} </p>
                 </div>
                 <div className="card-body">
@@ -91,23 +92,12 @@ class BulkDownloadContainer extends Component {
                         </thead>
                         <tbody> 	
                         {
-	                        art.getFiles().map((file, i) => {
+	                        value.getFiles().map((file, i) => {
 		                        return <DownloadFileList key={i} fileIndex={i} file={file} onFileSelectChange={this.onFileSelect} />
 				            })
 			            }
                         </tbody>
                     </table>
-                </div>
-                <div className="card-footer">Download to: 
-                    <div className="input-group">
-                        <div className="custom-file">
-                            <input type="file" className="custom-file-input" id="inputGroupFile04"/>
-                            <label className="custom-file-label" htmlFor="inputGroupFile04">Choose file</label>
-                        </div>
-                        <div className="input-group-append">
-                            <button className="btn btn-outline-secondary" type="button">Start Download</button>
-                        </div>
-                    </div>
                 </div>
                 </div>
     )
