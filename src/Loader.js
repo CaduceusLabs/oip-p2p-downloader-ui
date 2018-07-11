@@ -6,6 +6,7 @@ import Settings from "./assets/imgs/cog.svg";
 import Up from "./assets/imgs/arrow-up.svg";
 import Down from "./assets/imgs/arrow-down.svg";
 import { Artifact } from "oip-js";
+import OIP2P from "oip-p2p-downloader";
 
 class Loader extends Component {
     constructor(props) {
@@ -50,16 +51,15 @@ class Loader extends Component {
                                     {art.getTitle()}
                                 </div>
                                 <div>
-                                    249.6 MB of 3.94 GB (6.19%)
+                                    {OIP2P.downloadedBytes + '/' + OIP2P.totalBytes + " - " + Math.round(OIP2P.downloadedBytes/OIP2P.totalBytes*100000)/1000 + "%"}
                                     <div className="progress">
                                         <div
                                             className="progress-bar"
                                             role="progressbar"
-                                            style={{ width: "6.19%" }}
                                             aria-valuenow="6.19"
                                             aria-valuemin="0"
                                             aria-valuemax="100">
-                                            6.19%
+                                            {Math.round(OIP2P.downloadedBytes/OIP2P.totalBytes*100000)/1000 + "%"}
                                         </div>
                                     </div>
                                 </div>
