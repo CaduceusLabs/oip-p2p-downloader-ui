@@ -3,6 +3,7 @@ import Folder from './assets/imgs/folder-open.svg';
 import DownloadFileList from './DownloadFileList';
 import { Artifact } from 'oip-js';
 import filesize from 'filesize';
+// import { ipcRenderer } from 'electron';
 
 class BulkDownloadContainer extends Component {
     constructor(props){
@@ -46,6 +47,9 @@ class BulkDownloadContainer extends Component {
         this.setState({
             selectedFiles: tmpSelected
         })
+    }
+    downloadSelectedFiles() {
+        // ipcRenderer.send("downloadfiles", this.props.artifact, this.state.selectedFiles)
     }
     render(){
         // console.log(this.props.artifact)
@@ -98,6 +102,7 @@ class BulkDownloadContainer extends Component {
 			            }
                         </tbody>
                     </table>
+                    <button type="button" class="btn btn-primary btn-lg" onClick={this.downloadSelectedFiles}>Download</button>
                 </div>
                 </div>
     )

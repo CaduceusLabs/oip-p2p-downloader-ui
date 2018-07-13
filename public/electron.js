@@ -5,21 +5,24 @@ const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 const ipc = require('electron').ipcMain
-const IpfsConnector = require('@akashaproject/ipfs-connector')
-const OIPJS = require('oip-js')
+const { IpfsConnector } = require('@akashaproject/ipfs-connector')
+const {OIPJS} = require('oip-js')
 
 let mainWindow;
 
+
+
 function createWindow() {
-  console.log("foooooo")
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 680
   });
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
-  console.log(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`)
   mainWindow.on('closed', () => mainWindow = null);
 
+  dl = new Downloader()
+
+  
  
 }
 
@@ -131,11 +134,6 @@ class Downloader {
   }
 }
 
-
-module.exports = Downloader;
-
-
-
 app.on('ready', createWindow);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -148,9 +146,24 @@ app.on('activate', () => {
   }
 });
 
- ipc.on('pullArt', function(event, arg) {
-// mainWindow.webContents.send('progress', 5%)
+ ipc.on('downloadfiles', function(event, artifact, selectedFiles) {
 
-   dl.download(artifactID)
+
+  console.log(artifact);
+
+  var filesToDownload = artifact.getFiles();
+  var i = filesToDownload;
+  for ( i = 0; i < filesToDownload.length; i++) { 
+
+    if (selectedFiles.inlcudes(i)) {
+      var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
+
+      this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
+          console.log(info);
+      })
+  }
+}
+  
+                  
 
 })
