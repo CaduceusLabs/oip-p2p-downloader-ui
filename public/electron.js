@@ -42,14 +42,14 @@ class Downloader {
           var _this = this
 
              console.log('pre-ready') 
-             _this._ipfs_ready = true
+             this._ipfs_ready = true
   
       })
 
   }
       
   shutdown() {
-     _this._ipfs.on();
+     this._ipfs.stop();
    }
 
 
@@ -58,7 +58,7 @@ class Downloader {
       return new Promise((resolve, reject) => {
           var attemptDownload = () => {
               console.log('delay?')
-              if (!_this._ipfs_ready){
+              if (!this._ipfs_ready){
                   setTimeout(attemptDownload, 1000)
                   return
               }
@@ -76,7 +76,7 @@ class Downloader {
                   for ( i = 0; i < filesToDownload.length; i++) { 
                       var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
 
-                      _this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
+                      this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
                           console.log(info);
                       })
                   }
@@ -184,16 +184,22 @@ console.log('=========')
        var newFile = new ArtifactFile(undefined, newArtifact)
        Object.assign(newFile, filesToDownload[i])
        console.log('yurr')
+       console.log(newFile)
 
    if (selectedFiles.includes(i)) {
-       download_Location = "./data"
+  
       var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
        console.log(filePath)
+       download_Location = './data'
 
       dl.downloadFile(filePath,download_Location + '/' + newFile.getFilename()).then((info) => {
            console.log(info);
 
-      
+           process.on('SIGINT', function() {
+            console.log(" Shutting down IPFS Node");
+            dl.shutdown();
+            process.exit();
+        });
        })
    }
  }
