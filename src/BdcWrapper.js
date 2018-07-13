@@ -44,8 +44,8 @@ class BdcWrapper extends Component {
                 <br/>
                 <form className="form-inline">
                 <div className="form-group mx-sm-3 mb-2">
-                    <label for="inputArtifact" class="sr-only">Artifact </label>
-                    <input type="text" value={this.state.value} class="form-text" id="Artifactinput" onChange={this.updateArtifactText} onBlur={this.getArtifactFromID} placeholder="Artifact"/>
+                    <label htmlFor="inputArtifact" class="sr-only">Artifact </label>
+                    <input type="text" value={this.state.value} className="form-text" id="Artifactinput" onChange={this.updateArtifactText} onBlur={this.getArtifactFromID} placeholder="Artifact"/>
                  </div>
                 </form>
                 <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.value}/>

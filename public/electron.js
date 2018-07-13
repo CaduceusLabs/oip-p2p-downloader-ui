@@ -6,7 +6,10 @@ const url = require('url');
 const isDev = require('electron-is-dev');
 const ipc = require('electron').ipcMain
 const { IpfsConnector } = require('@akashaproject/ipfs-connector')
-const {OIPJS} = require('oip-js')
+const {OIPJS, Artifact, ArtifactFile} = require('oip-js')
+const {ipcMain} = require('electron')
+const fs = require('fs-extra')
+
 
 let mainWindow;
 
@@ -32,6 +35,7 @@ class Downloader {
       this._ipfs = IpfsConnector.getInstance()
       this._oipjs = new OIPJS(OIPJS_config);
 
+
       
       this._ipfs.start().then((api) => {
           console.log('post start')
@@ -45,16 +49,16 @@ class Downloader {
   }
       
   shutdown() {
-      this._ipfs.stop();
-  }
+     _this._ipfs.on();
+   }
 
 
-  download(artifact_ID, download_Location, filter_function){
+  download(artifact_ID, download_Location){
       console.log('ready')
       return new Promise((resolve, reject) => {
           var attemptDownload = () => {
               console.log('delay?')
-              if (!this._ipfs_ready){
+              if (!_this._ipfs_ready){
                   setTimeout(attemptDownload, 1000)
                   return
               }
@@ -72,7 +76,7 @@ class Downloader {
                   for ( i = 0; i < filesToDownload.length; i++) { 
                       var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
 
-                      this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
+                      _this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
                           console.log(info);
                       })
                   }
@@ -89,8 +93,10 @@ class Downloader {
           
       })
   }
+
      
   downloadFile(filePath, download_Location){
+      console.log(filePath,download_Location)
       return new Promise((resolve, reject) => {
          
           var downloadedBytes = 0
@@ -134,6 +140,8 @@ class Downloader {
   }
 }
 
+
+
 app.on('ready', createWindow);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -146,24 +154,49 @@ app.on('activate', () => {
   }
 });
 
- ipc.on('downloadfiles', function(event, artifact, selectedFiles) {
+  // ipc.on('downloadfile', function(event,artifact, selectedFiles) {
 
-
-  console.log(artifact);
-
-  var filesToDownload = artifact.getFiles();
-  var i = filesToDownload;
-  for ( i = 0; i < filesToDownload.length; i++) { 
-
-    if (selectedFiles.inlcudes(i)) {
-      var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
-
-      this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
-          console.log(info);
-      })
-  }
-}
   
+    // ipcMain.on('asynchronous-message', (event, arg) => {
+    // if(arg === downloadFile)
+       // event.sender.send('asynchronous-reply', 'pong');
+    // else
+       //  event.sender.send('asynchronous-reply', 'unrecognized arg');
+// })
+
+ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
+    console.log('ping') // prints "ping"
+
+    var newArtifact = new Artifact()
+    Object.assign(newArtifact, artifact)
+
+console.log('=========')
+console.log(artifact)
+console.log('=========')
+console.log(selectedFiles)
+console.log('=========')
+  
+  
+  var filesToDownload = newArtifact.getFiles();
+  var i = filesToDownload;
+  console.log('yeee')
+   for ( i = 0; i < filesToDownload.length; i++) { 
+       var newFile = new ArtifactFile(undefined, newArtifact)
+       Object.assign(newFile, filesToDownload[i])
+       console.log('yurr')
+
+   if (selectedFiles.includes(i)) {
+       download_Location = "./data"
+      var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
+       console.log(filePath)
+
+      dl.downloadFile(filePath,download_Location + '/' + newFile.getFilename()).then((info) => {
+           console.log(info);
+
+      
+       })
+   }
+ }
+})
                   
 
-})

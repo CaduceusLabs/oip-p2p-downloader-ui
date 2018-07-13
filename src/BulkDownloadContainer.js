@@ -3,7 +3,11 @@ import Folder from './assets/imgs/folder-open.svg';
 import DownloadFileList from './DownloadFileList';
 import { Artifact } from 'oip-js';
 import filesize from 'filesize';
-// import { ipcRenderer } from 'electron';
+
+const { ipcRenderer, remote } = window.require('electron');
+
+
+
 
 class BulkDownloadContainer extends Component {
     constructor(props){
@@ -14,7 +18,10 @@ class BulkDownloadContainer extends Component {
         }
 
         this.onFileSelect = this.onFileSelect.bind(this)
+        this.downloadSelectedFiles = this.downloadSelectedFiles.bind(this)
     }
+    // In renderer process (web page).
+
     onFileSelect(selected, index){
         console.log("Index", index)
         // setState, change selectedFiles Array based on `selected` variable and index
@@ -49,10 +56,19 @@ class BulkDownloadContainer extends Component {
         })
     }
     downloadSelectedFiles() {
-        // ipcRenderer.send("downloadfiles", this.props.artifact, this.state.selectedFiles)
+    
+
+       // ipcRenderer.on('asynchronous-reply', (event, arg) => {
+         // prints "pong"
+        console.log(new Date())
+         console.log(this.props.artifact)
+         console.log(this.state.selectedFiles)
+         ipcRenderer.send("downloadFile", this.props.artifact, this.state.selectedFiles,)
+       // })
+       
     }
     render(){
-        // console.log(this.props.artifact)
+       //  console.log(this.props.artifact)
         var value;
 
         if (this.props.artifact){
@@ -63,6 +79,7 @@ class BulkDownloadContainer extends Component {
     
         var selectedFiles = [];
         var files = value.getFiles();
+        
 
         var totalDownloadSize = 0;
 
@@ -72,7 +89,7 @@ class BulkDownloadContainer extends Component {
             totalDownloadSize += files[ this.state.selectedFiles[i] ].getFilesize();
         }
 
-        console.log(this.state)
+        //console.log(this.state)
     
         return(
             
