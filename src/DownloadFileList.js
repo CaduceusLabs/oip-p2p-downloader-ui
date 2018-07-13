@@ -11,6 +11,7 @@ import { ArtifactFile } from 'oip-js';
 import filesize from 'filesize';
 
 
+
 class DownloadFileList extends Component {
     constructor(props){
         super(props);

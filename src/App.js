@@ -3,12 +3,11 @@ import {
   BrowserRouter
 } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-
 import AppRoutes from './AppRoutes.js';
-
 import './assets/css/bootstrap.min.css';
-
 import { OIPJS } from 'oip-js';
+
+console.log("app.js")
 
 var Core = OIPJS();
 

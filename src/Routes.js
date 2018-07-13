@@ -6,7 +6,7 @@ const ipc = electron.ipcRenderer
 const pullArt = document.getElementById('Artifact')
 
 pullArt.addEventListener('click', function() {
-    ipc.send('IPFS-Spawn', document.getElementById('Spawn').value)
+    ipc.send('pullArt', document.getElementById('Spawn').value)
 
     var window = remote.getCurrentWindow();
     window.close()
