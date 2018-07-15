@@ -1,9 +1,11 @@
 {
-  "name": "oip",
+  "name": "open-index-protocol-p2p-downloader",
   "version": "0.1.0",
   "private": false,
-    
-    "repository": "https://github.com/oipwg/oip-p2p-downloader-ui",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oipwg/oip-p2p-downloader-ui.git"
+  },
   "main": "public/electron.js",
   "dependencies": {
     "@akashaproject/ipfs-connector": "^1.10.28",
@@ -15,8 +17,7 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
-    "license": "MIT"
+    "react-scripts": "1.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,5 +31,12 @@
     "electron": "^2.0.3",
     "electron-builder": "^20.16.0",
     "wait-on": "^2.1.0"
-  }
+  },
+  "description": "An interface for downloading artifacts",
+  "bugs": {
+    "url": "https://github.com/oipwg/oip-p2p-downloader-ui/issues"
+  },
+  "homepage": "https://github.com/oipwg/oip-p2p-downloader-ui#readme",
+  "author": "\"Anthony Howl <anthonyhowl@protonmail.ch>",
+  "license": "MIT"
 }
