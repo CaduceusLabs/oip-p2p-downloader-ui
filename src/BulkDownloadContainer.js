@@ -57,12 +57,10 @@ class BulkDownloadContainer extends Component {
     }
     downloadSelectedFiles() {
     
-
-       // ipcRenderer.on('asynchronous-reply', (event, arg) => {
-         // prints "pong"
         console.log(new Date())
          console.log(this.props.artifact)
          console.log(this.state.selectedFiles)
+       
          ipcRenderer.send("downloadFile", this.props.artifact, this.state.selectedFiles,)
        // })
        

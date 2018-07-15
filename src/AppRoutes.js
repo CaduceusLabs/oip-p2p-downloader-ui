@@ -21,10 +21,7 @@ class AppRoutes extends Component {
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
       <li className="nav-item active">
-        <a className="nav-link" href="load">Home <span className="sr-only">(current)</span></a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="Bulk">List</a>
+        <a className="nav-link" href="Bulk">Home <span className="sr-only">(current)</span></a>
       </li>
     </ul>
   </div>

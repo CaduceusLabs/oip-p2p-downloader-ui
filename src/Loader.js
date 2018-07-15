@@ -27,6 +27,8 @@ class Loader extends Component {
     
         return (
             <div>
+                <div className="modal-background" />
+                <div role="dialog" className="modal-dialog">
                 <table className="table">
                     <thead>
                         <tr>
@@ -95,6 +97,7 @@ class Loader extends Component {
                 <img  style={{ marginLeft: "10px" }}width="30"height="20"src={Up}/>0.00KB/S
                 <img className="float-right"  style={{ marginRight: "5px" }}width="30"height="30"src={Pause} />
             </div>
+    </div>
     </div>
 </div>
         );

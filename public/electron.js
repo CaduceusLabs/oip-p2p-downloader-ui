@@ -12,6 +12,7 @@ const fs = require('fs-extra')
 
 
 let mainWindow;
+let fileManager;
 
 
 
@@ -26,8 +27,28 @@ function createWindow() {
   dl = new Downloader()
 
   download_Location = './data'
- 
+
 }
+function createFileManager() {
+    fileManager = new BrowserWindow({
+        parent: mainWindow,
+      width: 800,
+      height: 580,
+      titleBarStyle:"hidden",
+      frame: false,
+      modal: true,
+      show: true
+    });
+    fileManager.loadURL(isDev ? 'http://localhost:3001' : `file://${path.join(__dirname, '../build/ipcindex.html')}`);
+    fileManager.on('closed', () => mainWindow = null);
+    fileManager.once('ready-to-show', () => {
+        fileManager.show()
+      })
+  
+    download_Location = './data'
+  
+  }
+
 
 class Downloader {
   constructor(IPFS_config, OIPJS_config){
@@ -143,7 +164,7 @@ class Downloader {
 
 
 
-app.on('ready', createWindow);
+app.on('ready', createWindow, createFileManager);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -152,6 +173,7 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
+    createFileManager(Loader);
   }
 });
 
@@ -166,8 +188,7 @@ app.on('activate', () => {
 // })
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
-    console.log('ping') // prints "ping"
-    
+
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
 
