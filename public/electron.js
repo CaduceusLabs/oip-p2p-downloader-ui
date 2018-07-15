@@ -25,7 +25,7 @@ function createWindow() {
 
   dl = new Downloader()
 
-  
+  download_Location = './data'
  
 }
 
@@ -126,9 +126,10 @@ class Downloader {
               stream.on('error', (err) => {
                      // console.error(err)
                   }).on('data', (data) => {
+                      console.log('sap')
                       downloadedBytes += data.length;
                       
-                      console.log(downloadedBytes + '/' + totalBytes + " - " + Math.round(downloadedBytes/totalBytes*100000)/1000 + "%")
+                      // console.log(downloadedBytes + '/' + totalBytes + " - " + Math.round(downloadedBytes/totalBytes*100000)/1000 + "%")
                       ws.write(data);
                   }).on('end', () => {
                   console.log("end")
@@ -166,7 +167,7 @@ app.on('activate', () => {
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
     console.log('ping') // prints "ping"
-
+    
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
 
@@ -187,22 +188,21 @@ console.log('=========')
        console.log(newFile)
 
    if (selectedFiles.includes(i)) {
-  
+       console.log('yao')
       var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
        console.log(filePath)
-       download_Location = './data'
+       console.log('jung')
 
       dl.downloadFile(filePath,download_Location + '/' + newFile.getFilename()).then((info) => {
-           console.log(info);
-
-           process.on('SIGINT', function() {
-            console.log(" Shutting down IPFS Node");
-            dl.shutdown();
-            process.exit();
-        });
        })
+
    }
  }
+ process.on('SIGINT', function() {
+    console.log(" Shutting down IPFS Node");
+    dl.shutdown();
+    process.exit();
+});
 })
                   
 

@@ -2,6 +2,8 @@
   "name": "oip",
   "version": "0.1.0",
   "private": false,
+    
+    "repository": "https://github.com/oipwg/oip-p2p-downloader-ui",
   "main": "public/electron.js",
   "dependencies": {
     "@akashaproject/ipfs-connector": "^1.10.28",
@@ -13,7 +15,8 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "license": "MIT"
   },
   "scripts": {
     "start": "react-scripts start",
