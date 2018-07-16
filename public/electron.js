@@ -132,7 +132,7 @@ class Downloader {
               stream.on('error', (err) => {
                      // console.error(err)
                   }).on('data', (data) => {
-                      console.log('sap')
+                  
                       downloadedBytes += data.length;
                       progressBar
                       .on('completed', function() {
