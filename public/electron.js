@@ -9,7 +9,7 @@ const { IpfsConnector } = require('@akashaproject/ipfs-connector')
 const {OIPJS, Artifact, ArtifactFile} = require('oip-js')
 const {ipcMain} = require('electron')
 const fs = require('fs-extra')
-
+const ProgressBar = require('electron-progressbar')
 
 let mainWindow;
 let fileManager;
@@ -17,6 +17,7 @@ let fileManager;
 
 
 function createWindow() {
+    console.error("CreateWindow Got Called")
   mainWindow = new BrowserWindow({
     width: 1000,
     height: 680
@@ -29,26 +30,6 @@ function createWindow() {
   download_Location = './data'
 
 }
-function createFileManager() {
-    fileManager = new BrowserWindow({
-        parent: mainWindow,
-      width: 800,
-      height: 580,
-      titleBarStyle:"hidden",
-      frame: false,
-      modal: true,
-      show: true
-    });
-    fileManager.loadURL(isDev ? 'http://localhost:3001' : `file://${path.join(__dirname, '../build/ipcindex.html')}`);
-    fileManager.on('closed', () => mainWindow = null);
-    fileManager.once('ready-to-show', () => {
-        fileManager.show()
-      })
-  
-    download_Location = './data'
-  
-  }
-
 
 class Downloader {
   constructor(IPFS_config, OIPJS_config){
@@ -136,7 +117,11 @@ class Downloader {
           
           console.log("pre stream")
          var dir = path.parse(download_Location).dir
-
+         var progressBar = new ProgressBar({
+            indeterminate: false,
+            text:'Preparing Artifact',
+            detail: 'Loading...'
+        })
           fs.ensureDir(dir).then(() => {
                  console.log('success!')
           
@@ -149,7 +134,22 @@ class Downloader {
                   }).on('data', (data) => {
                       console.log('sap')
                       downloadedBytes += data.length;
-                      
+                      progressBar
+                      .on('completed', function() {
+                          console.info(`completed...`)
+                          progressBar.detail = 'Task completed. Exiting...';
+                      })
+                      .on('aborted', function(number) {
+                          console.info(`aborted...${value}`);
+                      })
+                      .on('progress', function(number) {
+                          progressBar.detail = Math.round(downloadedBytes/totalBytes*100000)/1000;
+                      });
+                      setInterval(function() {
+                          if(!progressBar.isCompleted()){
+                            progressBar.value += 1;
+                          }
+                        }, 20);
                       // console.log(downloadedBytes + '/' + totalBytes + " - " + Math.round(downloadedBytes/totalBytes*100000)/1000 + "%")
                       ws.write(data);
                   }).on('end', () => {
@@ -164,7 +164,7 @@ class Downloader {
 
 
 
-app.on('ready', createWindow, createFileManager);
+app.on('ready', createWindow);
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
@@ -173,7 +173,6 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
-    createFileManager(Loader);
   }
 });
 
