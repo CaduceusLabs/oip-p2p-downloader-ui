@@ -133,7 +133,7 @@ class Downloader {
             console.info(`aborted...`);
         })
         .on('progress', function(value) {
-            progressBar.detail = `${value} out of ${progressBar.getOptions().maxValue}...`;
+            progressBar.detail = `${value}%`;
         });  
         // setInterval(function() {
         //     if(!progressBar.isCompleted()){
@@ -154,7 +154,7 @@ class Downloader {
                   }).on('data', (data) => {
                   
                       var bounce = downloadedBytes += data.length;
-                      progressBar.value = downloadedBytes/totalBytes*100 + '%'
+                      progressBar.value = downloadedBytes/totalBytes*100
      
                       // console.log(downloadedBytes + '/' + totalBytes + " - " + Math.round(downloadedBytes/totalBytes*100000)/1000 + "%")
                       ws.write(data);
