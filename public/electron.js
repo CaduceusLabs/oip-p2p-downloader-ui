@@ -12,7 +12,7 @@ const fs = require('fs-extra')
 const ProgressBar = require('electron-progressbar')
 
 let mainWindow;
-let fileManager;
+
 
 
 
@@ -117,11 +117,31 @@ class Downloader {
           
           console.log("pre stream")
          var dir = path.parse(download_Location).dir
+         var value = Math.round(downloadedBytes/totalBytes*100)
          var progressBar = new ProgressBar({
             indeterminate: false,
             text:'Preparing Artifact',
-            detail: 'Loading...'
+            detail: 'Loading...',
+        
         })
+        progressBar
+        .on('completed', function() {
+            console.info(`completed...`)
+            progressBar.detail = 'Task completed. Exiting...';
+        })
+        .on('aborted', function(value) {
+            console.info(`aborted...`);
+        })
+        .on('progress', function(value) {
+            progressBar.detail = `${value} out of ${progressBar.getOptions().maxValue}...`;
+        });  
+        // setInterval(function() {
+        //     if(!progressBar.isCompleted()){
+        //       progressBar.value += bounce;
+        //     }
+        //   }, );
+
+
           fs.ensureDir(dir).then(() => {
                  console.log('success!')
           
@@ -130,26 +150,12 @@ class Downloader {
           if (stream.readable) {
               console.log("readable")
               stream.on('error', (err) => {
-                     // console.error(err)
+                      console.error(err)
                   }).on('data', (data) => {
                   
-                      downloadedBytes += data.length;
-                      progressBar
-                      .on('completed', function() {
-                          console.info(`completed...`)
-                          progressBar.detail = 'Task completed. Exiting...';
-                      })
-                      .on('aborted', function(number) {
-                          console.info(`aborted...${value}`);
-                      })
-                      .on('progress', function(number) {
-                          progressBar.detail = Math.round(downloadedBytes/totalBytes*100000)/1000;
-                      });
-                      setInterval(function() {
-                          if(!progressBar.isCompleted()){
-                            progressBar.value += 1;
-                          }
-                        }, 20);
+                      var bounce = downloadedBytes += data.length;
+                      progressBar.value = downloadedBytes/totalBytes*100 + '%'
+     
                       // console.log(downloadedBytes + '/' + totalBytes + " - " + Math.round(downloadedBytes/totalBytes*100000)/1000 + "%")
                       ws.write(data);
                   }).on('end', () => {
