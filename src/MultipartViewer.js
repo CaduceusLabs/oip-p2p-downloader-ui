@@ -22,7 +22,7 @@ class MultipartViewer extends Component {
   				<div className="card-body">
 				  <p>TXID: <code>{mp.getTXID()}</code></p>
   						<div>FloData:
-					<div className="alert alert-secondary" style={{wordBreak:"break-all"}} role="alert">
+					<div className="alert alert-secondary" style={{textAlign:'left'}} role="alert">
 					  {mp.toString()}
 						</div>
 					</div>
@@ -31,7 +31,7 @@ class MultipartViewer extends Component {
 					<p>Publisher Address: <code>{mp.getPublisherAddress()}</code></p>
 					<p>FirstTXIDRef: <code>{mp.getFirstPartTXID()}</code></p>
 					<p>Signature: <code>{mp.getSignature()}</code></p>
-					<p>PartData: <code style={{wordBreak:"break-all"}}> {mp.getChoppedStringData()}</code></p>
+					<p>PartData: <code style={{wordBreak:"break-all"}}>{mp.getChoppedStringData()}</code></p>
   				</div>
 			</div>
 		)
