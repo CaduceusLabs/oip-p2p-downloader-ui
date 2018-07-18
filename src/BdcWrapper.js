@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import BulkDownloadContainer from './BulkDownloadContainer.js'
-import Loader from './Loader.js';
+
 
 
 
