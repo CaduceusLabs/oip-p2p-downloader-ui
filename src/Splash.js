@@ -1,16 +1,19 @@
  import React, { Component } from 'react';
- import oip from './oip.jpeg'
+ import oip from './oip-wordmark-and-logo.png'
 
-
-	class SimpleExample extends React.Component {
+const imagestyle = {
+	textAlign: 'center',
+	marginTop: '40px'
+}
+	class Splash extends React.Component {
 		// React components are simple functions that take in props and state, and render HTML
 		render() {
 			return (
 
-					<div className="image"> 
+					<div className="image"style={imagestyle}> 
 						<img src={oip} class="img-fluid" alt="Responsive image"/>
 
 					</div> 
 			)}};
- export default SimpleExample;
+ export default Splash;
 
