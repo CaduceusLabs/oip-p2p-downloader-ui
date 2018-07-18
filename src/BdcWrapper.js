@@ -16,6 +16,9 @@ class BdcWrapper extends Component {
         this.updateArtifactText = this.updateArtifactText.bind(this);
         this.getArtifactFromID = this.getArtifactFromID.bind(this);
     }
+    submitHandler(e) {
+        e.preventDefault();
+    }
 
     updateArtifactText(event){
         console.log(event.target.value)
@@ -42,10 +45,14 @@ class BdcWrapper extends Component {
         return (
             <div>
                 <br/>
-                <form className="form-inline">
+                <form className="form-inline" onSubmit={this.submitHandler}>
+
                 <div className="form-group mx-sm-3 mb-2">
                     <label htmlFor="inputArtifact" class="sr-only">Artifact </label>
-                    <input type="text" value={this.state.value} className="form-text" id="Artifactinput" onChange={this.updateArtifactText} onBlur={this.getArtifactFromID} placeholder="Artifact"/>
+                    <div className="input-group row">
+                    <input type="text" value={this.state.value} keydown="false" className="form-text" id="Artifactinput" onChange={this.updateArtifactText} onBlur={this.getArtifactFromID}  placeholder="Artifact"/>
+                    <input class="btn btn-primary btn-sm" type="button" value="Submit" style={{marginTop:'3px'}}/>
+                    </div>
                  </div>
                 </form>
                 <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.value}/>
