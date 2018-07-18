@@ -6,8 +6,11 @@ import ReactDOM from 'react-dom';
 import './App.css';
 import DownloadFileList from './DownloadFileList.js';
 import BdcWrapper from './BdcWrapper.js';
-import Loader from './Loader.js';
 import oip from './oip.svg';
+import Splash from './Splash.js'
+import Lookup from './Lookup.js';
+import Multipart from './Multipart.js';
+import Artifact from './ArtifactInspec';
 
 class AppRoutes extends Component {
   render() {
@@ -23,12 +26,26 @@ class AppRoutes extends Component {
       <li className="nav-item active">
         <a className="nav-link" href="Bulk">Home <span className="sr-only">(current)</span></a>
       </li>
+      <li className="nav-item">
+        <a className="nav-link" href="/artLook">Artifact Explorer<span className="sr-only"></span></a>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" href="/multipart">Multipart Inspector<span className="sr-only"></span></a>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" href="/artInspec">Artifact Inspector<span className="sr-only"></span></a>
+      </li>
     </ul>
   </div>
 </nav>
 					<Route path="/Bulk" render={props => <BdcWrapper Core={this.props.Core}{...props} />} />
-					 <Route path="/load" render={props => <Loader Core={this.props.Core}{...props} />} />
-        
+          <Route path="/artLook" render={props => <Lookup Core={this.props.Core}{...props} />} />
+          <Route path="/multipart" render={props => <Multipart Core={this.props.Core} {...props} />} />
+          <Route path="/artInspec" render={props => <Artifact Core={this.props.Core} {...props} />} />
+          <Route path="/" render={props => <Splash Core={this.props.Core} {...props} />} />
+          
+
+       
 
       </div>
     );
