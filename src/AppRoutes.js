@@ -12,6 +12,7 @@ import Lookup from './Lookup.js';
 import Multipart from './Multipart.js';
 import Artifact from './ArtifactInspec';
 
+
 class AppRoutes extends Component {
   render() {
     return (
@@ -24,10 +25,7 @@ class AppRoutes extends Component {
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
       <li className="nav-item active">
-        <a className="nav-link" href="Bulk">Home <span className="sr-only">(current)</span></a>
-      </li>
-      <li className="nav-item">
-        <a className="nav-link" href="/artLook">Artifact Explorer<span className="sr-only"></span></a>
+        <a className="nav-link" href="/artLook">Home <span className="sr-only">(current)</span></a>
       </li>
       <li className="nav-item">
         <a className="nav-link" href="/multipart">Multipart Inspector<span className="sr-only"></span></a>
@@ -38,7 +36,7 @@ class AppRoutes extends Component {
     </ul>
   </div>
 </nav>
-					<Route path="/Bulk" render={props => <BdcWrapper Core={this.props.Core}{...props} />} />
+					
           <Route path="/artLook" render={props => <Lookup Core={this.props.Core}{...props} />} />
           <Route path="/multipart" render={props => <Multipart Core={this.props.Core} {...props} />} />
           <Route path="/artInspec" render={props => <Artifact Core={this.props.Core} {...props} />} />
