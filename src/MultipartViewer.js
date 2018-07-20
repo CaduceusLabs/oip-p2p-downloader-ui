@@ -31,7 +31,7 @@ class MultipartViewer extends Component {
 					<p>Publisher Address: <code>{mp.getPublisherAddress()}</code></p>
 					<p>FirstTXIDRef: <code>{mp.getFirstPartTXID()}</code></p>
 					<p>Signature: <code>{mp.getSignature()}</code></p>
-					<p>PartData: <code style={{wordBreak:"break-all"}}>{mp.getChoppedStringData()}</code></p>
+					<p>PartData: <code style={{wordBreak:"break-word", wordWrap:"break-word", overflowWrap:"break-word", msHyphens:"auto", MozHyphens:"auto", WebkitHyphens:"auto", hyphens:"auto"}}>{mp.getChoppedStringData()}</code></p>
   				</div>
 			</div>
 		)
