@@ -19,7 +19,7 @@ let mainWindow;
 function createWindow() {
     console.error("CreateWindow Got Called")
   mainWindow = new BrowserWindow({
-    width: 1000,
+    width: 1200,
     height: 680
   });
   mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
@@ -182,42 +182,21 @@ app.on('activate', () => {
   }
 });
 
-  // ipc.on('downloadfile', function(event,artifact, selectedFiles) {
-
-  
-    // ipcMain.on('asynchronous-message', (event, arg) => {
-    // if(arg === downloadFile)
-       // event.sender.send('asynchronous-reply', 'pong');
-    // else
-       //  event.sender.send('asynchronous-reply', 'unrecognized arg');
-// })
-
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
 
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
 
-console.log('=========')
-console.log(artifact)
-console.log('=========')
-console.log(selectedFiles)
-console.log('=========')
-  
-  
   var filesToDownload = newArtifact.getFiles();
   var i = filesToDownload;
-  console.log('yeee')
    for ( i = 0; i < filesToDownload.length; i++) { 
        var newFile = new ArtifactFile(undefined, newArtifact)
        Object.assign(newFile, filesToDownload[i])
-       console.log('yurr')
        console.log(newFile)
 
    if (selectedFiles.includes(i)) {
-       console.log('yao')
       var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
        console.log(filePath)
-       console.log('jung')
 
       dl.downloadFile(filePath,download_Location + '/' + newFile.getFilename()).then((info) => {
        })
