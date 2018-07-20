@@ -7,10 +7,15 @@ import './App.css';
 import DownloadFileList from './DownloadFileList.js';
 import BdcWrapper from './BdcWrapper.js';
 import oip from './oip.svg';
-import Splash from './Splash.js'
 import Lookup from './Lookup.js';
 import Multipart from './Multipart.js';
 import Artifact from './ArtifactInspec';
+import DlManager from './DownloadManager';
+import oiplogo from './oip-wordmark-and-logo.png'
+const imagestyle = {
+	textAlign: 'center',
+	marginTop: '40px'
+}
 
 
 class AppRoutes extends Component {
@@ -31,21 +36,24 @@ class AppRoutes extends Component {
         <a className="nav-link" href="/multipart">Multipart Inspector<span className="sr-only"></span></a>
       </li>
       <li className="nav-item">
-        <a className="nav-link" href="/artInspec">Artifact Inspector<span className="sr-only"></span></a>
+        <a className="nav-link" href="/DlManager">Download Manager<span className="sr-only"></span></a>
       </li>
     </ul>
   </div>
 </nav>
 					
-          <Route path="/artLook" render={props => <Lookup Core={this.props.Core}{...props} />} />
+          <Route path="/artlook" render={props => <Lookup Core={this.props.Core}{...props} />} />
           <Route path="/multipart" render={props => <Multipart Core={this.props.Core} {...props} />} />
           <Route path="/artInspec" render={props => <Artifact Core={this.props.Core} {...props} />} />
-          <Route path="/" render={props => <Splash Core={this.props.Core} {...props} />} />
-          
+          <Route path="/DlManager" render={props => <DlManager Core={this.props.Core} {...props} />} />
 
-       
 
-      </div>
+       	<div className="image"style={imagestyle}> 
+						<img src={oiplogo} class="img-fluid" alt="Responsive image"/>
+
+					</div> 
+
+    </div>
     );
   }
 }
