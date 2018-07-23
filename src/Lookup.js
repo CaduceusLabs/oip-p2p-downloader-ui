@@ -77,10 +77,10 @@ class Lookup extends Component {
 	
 	
 	render(){
-		var x = document.documentElement.nodeName;
-		var documentHeight=x.offsetHeight;
-		var viewportHeight=window.innerHeight;
-		window.scrollTo(0, documentHeight-viewportHeight);
+		// var x = document.documentElement.nodeName;
+		// var documentHeight=x.offsetHeight;
+		// var viewportHeight=window.innerHeight;
+		// window.scrollTo(0, documentHeight-viewportHeight);
 		
 					window.onscroll = function() {scrollFunction()};
 					function scrollFunction() {
@@ -93,12 +93,12 @@ class Lookup extends Component {
 
 
 			function topFunction() {
-			document.body.scrollTop = 0; 
-			document.documentElement.scrollTop = 0; 
+		window.scrollTo(0,0)
 			}
 			function gobottom(){
+				console.log("going down")
 				var documentHeight=document.documentElement.offsetHeight;
-				var viewportHeight=window.innerHeight;
+				 var viewportHeight=window.innerHeight;
 				window.scrollTo(0,documentHeight-viewportHeight);
 				}
 				
@@ -106,14 +106,15 @@ class Lookup extends Component {
 		return(
 			
 		<div className="container">
-		 <input type="button" value="Go To Bottom" id="myBtn" onclick={gobottom()}/> 
+		<input type="button" value="Top" id="myBtn" onClick={() => {topFunction()}}/> 
 			<div className="input-group row">
 			<label htmlFor="ArtifactLookup" className="col-form-label" style={{marginRight:"10px"}}>Artifact ID:</label>
   				<input onChange={this.updateSearchText} type="text" className="form-control"/>
   				<div className="input-group-append">
     				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ (event) => this.getMultiparts(this.state.searchText)}>
 					</input>
-					<input type="image" name="download" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => this.getArtifactFromID(this.state.searchText) }></input>
+					
+					<input type="image" name="download" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifactFromID(this.state.searchText); gobottom()} }></input>
   				</div>
 			</div>
 

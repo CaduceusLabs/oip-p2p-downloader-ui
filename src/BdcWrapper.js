@@ -51,7 +51,7 @@ class BdcWrapper extends Component {
                     <label htmlFor="inputArtifact" class="sr-only">Artifact </label>
                     <div className="input-group row">
                     <input type="text" value={this.state.value} keydown="false" className="form-text" id="Artifactinput" onChange={this.updateArtifactText} onBlur={this.getArtifactFromID}  placeholder="Artifact"/>
-                    <input class="btn btn-primary btn-sm" type="button" value="Submit" style={{marginTop:'3px'}}/>
+                    <input class="btn btn-primary btn-sm" onclick="ScrollToBottom()" type="button" value="Submit" style={{marginTop:'3px'}}/>
                     </div>
                  </div>
                 </form>
