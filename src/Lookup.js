@@ -7,6 +7,9 @@ import MultipartViewer from './MultipartViewer.js';
 import ToggleDisplay from 'react-toggle-display';
 import BulkDownloadContainer from './BulkDownloadContainer.js';
 import download from './assets/imgs/arrow-down.svg';
+import './Lookup.css'
+import ScrollToBottom from 'react-scroll-to-bottom';
+
 
 class Lookup extends Component {
 	constructor(props){
@@ -20,9 +23,11 @@ class Lookup extends Component {
 			
 
 		}
-
+		
 		this.getMultiparts = this.getMultiparts.bind(this)
 		this.updateSearchText = this.updateSearchText.bind(this)
+	
+
 	}
 	
 	getMultiparts(searchTXID){
@@ -68,11 +73,40 @@ class Lookup extends Component {
         }, function(err){
             console.error(err)
         })
-    }
+	}
+	
+	
 	render(){
+		var x = document.documentElement.nodeName;
+		var documentHeight=x.offsetHeight;
+		var viewportHeight=window.innerHeight;
+		window.scrollTo(0, documentHeight-viewportHeight);
+		
+					window.onscroll = function() {scrollFunction()};
+					function scrollFunction() {
+					if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+						document.getElementById("myBtn").style.display = "block";
+					} else {
+						document.getElementById("myBtn").style.display = "none";
+					}
+				}
+
+
+			function topFunction() {
+			document.body.scrollTop = 0; 
+			document.documentElement.scrollTop = 0; 
+			}
+			function gobottom(){
+				var documentHeight=document.documentElement.offsetHeight;
+				var viewportHeight=window.innerHeight;
+				window.scrollTo(0,documentHeight-viewportHeight);
+				}
+				
 		console.log(this.state);
 		return(
+			
 		<div className="container">
+		 <input type="button" value="Go To Bottom" id="myBtn" onclick={gobottom()}/> 
 			<div className="input-group row">
 			<label htmlFor="ArtifactLookup" className="col-form-label" style={{marginRight:"10px"}}>Artifact ID:</label>
   				<input onChange={this.updateSearchText} type="text" className="form-control"/>
@@ -96,13 +130,16 @@ class Lookup extends Component {
 				})
 			}
 			 <ToggleDisplay if = {this.state.showBDC}>
+			 <ScrollToBottom className="DisplayArts">
 			 {this.state.searchText ? <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.searchText}/> : "" }
+			 </ScrollToBottom>
 			 </ToggleDisplay>
 
 			
 		</div>
 		)
 	}
+
 }
 
 export default Lookup;
