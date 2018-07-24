@@ -134,14 +134,7 @@ class Downloader {
         })
         .on('progress', function(value) {
             progressBar.detail = `${value}%`;
-        });  
-        // setInterval(function() {
-        //     if(!progressBar.isCompleted()){
-        //       progressBar.value += bounce;
-        //     }
-        //   }, );
-
-
+        }); 
           fs.ensureDir(dir).then(() => {
                  console.log('success!')
           
