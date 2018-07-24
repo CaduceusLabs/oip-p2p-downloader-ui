@@ -23,15 +23,12 @@ class AppRoutes extends Component {
     return (
       <div className="App">
    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-  <a className="navbar-brand" href="#"> <img src={oip} width="30" height="30" alt=""/></a>
+  <a className="navbar-link" href="/"> <img src={oip} width="30" height="30" alt=""/></a>
   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span className="navbar-toggler-icon"></span>
   </button>
   <div className="collapse navbar-collapse" id="navbarNav">
     <ul className="navbar-nav">
-      <li className="nav-item active">
-        <a className="nav-link" href="/artLook">Home <span className="sr-only">(current)</span></a>
-      </li>
       <li className="nav-item">
         <a className="nav-link" href="/multipart">Multipart Inspector<span className="sr-only"></span></a>
       </li>
@@ -42,7 +39,7 @@ class AppRoutes extends Component {
   </div>
 </nav>
 					
-          <Route path="/artlook" render={props => <Lookup Core={this.props.Core}{...props} />} />
+          <Route exact path='/' render={props => <Lookup Core={this.props.Core}{...props} />} />
           <Route path="/multipart" render={props => <Multipart Core={this.props.Core} {...props} />} />
           <Route path="/artInspec" render={props => <Artifact Core={this.props.Core} {...props} />} />
           <Route path="/DlManager" render={props => <DlManager Core={this.props.Core} {...props} />} />
