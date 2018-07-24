@@ -34,23 +34,16 @@ class BulkDownloadContainer extends Component {
             // If index is in tmpSelected array
                 // If index is not, then add the index to the tmpSelected array
 
-        if (selected){
-            if (!tmpSelected.includes(index)){
-                tmpSelected.push(index);
-            }
+        let i = tmpSelected.indexOf(index)
+        if (selected === true && i === -1) {
+            tmpSelected.push(index)
+        }
+        if (selected === false && i > -1) {
+            tmpSelected.splice(i, 1)
         }
 
+        console.log("onFileSelectd", tmpSelected, selected, index)
 
-        // If selected is false
-        if (!selected){
-            if (tmpSelected.includes(index)){
-                tmpSelected.splice(index);
-            }
-        }
-            // If index is in tmpSelected array
-                // Remove index from tmpSelected array
-
-        // Set the state to the new selected array we just computed
         this.setState({
             selectedFiles: tmpSelected
         })

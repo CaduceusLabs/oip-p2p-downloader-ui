@@ -26,14 +26,12 @@ class DownloadFileList extends Component {
       return splitFilename[indexToGrab];
     }
     onInputChange(event){
-      // Connect me to the Input
       // value is stored most likely at e.target.value
       var selected = event.target.checked;
 
       console.log("Checked: " + selected);
 
       var ind = this.props.fileIndex;
-
       this.props.onFileSelectChange(selected, ind)
     }
     render(){
