@@ -154,9 +154,9 @@ class Downloader {
                   }).on('data', (data) => {
                   
                       var bounce = downloadedBytes += data.length;
-                      progressBar.value = downloadedBytes/totalBytes*100
+                      progressBar.value = Math.round(downloadedBytes/totalBytes*100)
      
-                      // console.log(downloadedBytes + '/' + totalBytes + " - " + Math.round(downloadedBytes/totalBytes*100000)/1000 + "%")
+                   
                       ws.write(data);
                   }).on('end', () => {
                   console.log("end")
