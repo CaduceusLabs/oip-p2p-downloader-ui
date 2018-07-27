@@ -10,6 +10,7 @@ const {OIPJS, Artifact, ArtifactFile} = require('oip-js')
 const {ipcMain} = require('electron')
 const fs = require('fs-extra')
 const ProgressBar = require('electron-progressbar')
+const {dialog} = require("electron");
 
 let mainWindow;
 
@@ -27,7 +28,6 @@ function createWindow() {
 
   dl = new Downloader()
 
-  download_Location = './data'
 
 }
 
@@ -56,7 +56,8 @@ class Downloader {
 
 
   download(artifact_ID, download_Location){
-      console.log('ready')
+
+    console.log('ready')
       return new Promise((resolve, reject) => {
           var attemptDownload = () => {
               console.log('delay?')
@@ -177,6 +178,10 @@ app.on('activate', () => {
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
 
+    selectedFolder = dialog.showOpenDialog({defaultPath:__dirname,properties:["openDirectory"]})
+    selectedFolder !== undefined ?
+      download_Location = selectedFolder[0] : "./data"
+      
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
 
