@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Artifact } from 'oip-js';
+import { Artifact } from 'oip-index';
 
 class ArtifactViewer extends Component {
 	render(){

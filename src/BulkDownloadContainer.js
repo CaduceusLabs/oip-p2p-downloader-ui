@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import Folder from './assets/imgs/folder-open.svg';
 import DownloadFileList from './DownloadFileList';
-import { Artifact } from 'oip-js';
+import { Artifact } from 'oip-index';
 import filesize from 'filesize';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import glamorous from 'glamorous';
+import { Span } from 'glamorous'
+const {css} =  require('glamor');
 const { ipcRenderer, remote } = window.require('electron');
-
-
 
 class BulkDownloadContainer extends Component {
     constructor(props){
@@ -21,11 +21,17 @@ class BulkDownloadContainer extends Component {
         this.onFileSelect = this.onFileSelect.bind(this)
         this.downloadSelectedFiles = this.downloadSelectedFiles.bind(this)
 
-
         ipcRenderer.on("toast", (message) => {
-            toast(message);
-        })
-    }
+            toast(message)
+            if (!toast.isActive(this.toastId)) {
+                this.toastId = toast("I cannot be duplicated !");
+                
+                
+              }
+            })
+        }
+        
+
     
     // In renderer process (web page).
   
@@ -64,7 +70,17 @@ class BulkDownloadContainer extends Component {
 
        var  dlStatus = ipcRenderer.sendSync("downloadFile", this.props.artifact, this.state.selectedFiles,)
         if (dlStatus.success === false) {
-            toast(dlStatus.reason)
+            toast(dlStatus.reason),{
+                className: css({
+                  background: 'black'
+                }),
+                bodyClassName: css({
+                  fontSize: '18px'
+                }),
+                progressClassName: css({
+                  background: "repeating-radial-gradient(circle at center, red 0, blue, green 30px)"
+                })
+              };
         }
        // })
        
@@ -90,15 +106,13 @@ class BulkDownloadContainer extends Component {
 
             totalDownloadSize += files[ this.state.selectedFiles[i] ].getFilesize();
         }
-
-        //console.log(this.state)
-    
         return(
            <div>
            <div>
-              <ToastContainer />
-            </div>
     
+                        <ToastContainer/>
+             
+            </div>
             <div class="card">
                 <div class="card-header">
                         <p className="OpenFolder"><img width="30" height="30" src={Folder} style={{marginRight:"10px"}}/>{value.getTitle()}</p>

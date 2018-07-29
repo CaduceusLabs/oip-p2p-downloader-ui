@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Artifact, Multipart } from 'oip-js';
+import { Artifact, Multipart, Index } from 'oip-index';
 import inspect from './assets/imgs/inspect.svg';
 import ArtifactViewer from './ArtifactViewer.js';
 import MultipartViewer from './MultipartViewer.js';
@@ -20,6 +20,7 @@ class Lookup extends Component {
 			artifact: undefined,
 			showBDC: false
 
+
 			
 
 		}
@@ -30,25 +31,21 @@ class Lookup extends Component {
 
 	}
 	
-	getMultiparts(searchTXID){
-		var self = this;
-
-		this.props.Core.Index.getMultipartsForArtifact(searchTXID, function(mps){
-			if (mps.length === 1 && mps[0] instanceof Artifact) {
-				var art = mps[0]
-			} else {
-				var art = new Artifact();
-
-				art.fromMultiparts(mps);
-			}
-
-			self.setState({
+	async getMultiparts(txid){
+		var index = new Index();
+		let mps = await index.getMultiparts(txid)
+			index.getMultiparts(txid, function(mps){
+			var art = new Artifact(mps)
+			this.setState({
 				multiparts: mps,
 				artifact: art
 			})
 		}, function(err){
 			console.error(err)
 		})
+
+
+
 	}
 	updateSearchText(event){
 		console.log(event.target.value)
@@ -65,7 +62,7 @@ class Lookup extends Component {
 	  getArtifactFromID(value){
 		  this.setState({showBDC: true}) 
         var self = this;
-        this.props.Core.Index.getArtifactFromID(value, function(artifact){
+		Artifact.getTXID(value, function(artifact){
             console.log(`value ${artifact}`)
             self.setState({
                 artifact: artifact
