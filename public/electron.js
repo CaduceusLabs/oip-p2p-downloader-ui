@@ -6,7 +6,8 @@ const url = require('url');
 const isDev = require('electron-is-dev');
 const ipc = require('electron').ipcMain
 const { IpfsConnector } = require('@akashaproject/ipfs-connector')
-const {OIPJS, Artifact, ArtifactFile} = require('oip-js')
+const {OIPJS,} = require('oip-js')
+const { Index, Artifact, ArtifactFile } = require('oip-index')
 const {ipcMain} = require('electron')
 const fs = require('fs-extra')
 const ProgressBar = require('electron-progressbar')
@@ -32,10 +33,10 @@ function createWindow() {
 }
 
 class Downloader {
-  constructor(IPFS_config, OIPJS_config){
+  constructor(){
 
       this._ipfs = IpfsConnector.getInstance()
-      this._oipjs = new OIPJS(OIPJS_config);
+      this.Index = new Index();
 
 
       
@@ -70,26 +71,27 @@ class Downloader {
               if (!artifact_ID)
                   reject(new Error("Artifact ID is undefined!"))
 
-              this._oipjs.Index.getArtifactFromID(artifact_ID, (artifact) => {
-                  // on success
-                  console.log(artifact);
-
-                  var filesToDownload = artifact.getFiles();
-                  var i = filesToDownload;
-                  for ( i = 0; i < filesToDownload.length; i++) { 
-                      var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
-
-                      this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
-                          console.log(info);
-                      })
-                  }
                   
-                  
-                  console.log(download_Location)
-              }, (error) => {
-                  reject(error)
-              })
-          }
+              this.Index.getArtifact(artifact_ID)
+                .then(artifact => {
+                    // on success
+                    console.log(artifact);
+
+                    var filesToDownload = artifact.getFiles();
+                    // var i = filesToDownload;
+                    for ( var i = 0; i < filesToDownload.length; i++) { 
+                        var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
+
+                        this.downloadFile(filePath,download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
+                            console.log(info);
+                        })
+                    }    
+                            console.log(download_Location)
+                        })
+                        .catch(error => { reject(error)})
+
+                    }
+          
 
           attemptDownload()
 
@@ -178,19 +180,26 @@ app.on('activate', () => {
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
 
-    selectedFolder = dialog.showOpenDialog({defaultPath:__dirname,properties:["openDirectory"]})
-    selectedFolder !== undefined ?
-      download_Location = selectedFolder[0] : "./data"
-      
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
+
 
   var filesToDownload = newArtifact.getFiles();
   var i = filesToDownload;
    for ( i = 0; i < filesToDownload.length; i++) { 
+
        var newFile = new ArtifactFile(undefined, newArtifact)
        Object.assign(newFile, filesToDownload[i])
        console.log(newFile)
+       if (newFile.isPaid() !== false) {
+        event.returnValue = { "success": false, "reason": "cannot download paid file"}
+        return
+    }
+    selectedFolder = dialog.showOpenDialog({defaultPath:__dirname,properties:["openDirectory"]})
+    selectedFolder !== undefined ?
+      download_Location = selectedFolder[0] : "./data"
+      
+    
 
    if (selectedFiles.includes(i)) {
       var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
@@ -198,7 +207,7 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
 
       dl.downloadFile(filePath,download_Location + '/' + newFile.getFilename()).then((info) => {
        })
-
+       event.returnValue = {"success": true}
    }
  }
  process.on('SIGINT', function() {
