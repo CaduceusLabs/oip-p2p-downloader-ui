@@ -7,7 +7,7 @@ import Pdf from './assets/imgs/file-pdf.svg';
 import Code from './assets/imgs/file-code.svg';
 import Audio from './assets/imgs/file-audio.svg';
 import Text from './assets/imgs/file-alt.svg';
-import { ArtifactFile } from 'oip-js';
+import { ArtifactFile } from 'oip-index';
 import filesize from 'filesize';
 
 

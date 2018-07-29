@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Multipart } from 'oip-js';
+import { Multipart } from 'oip-index';
 
 class MultipartViewer extends Component {
 	render(){
