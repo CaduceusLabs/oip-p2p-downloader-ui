@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Artifact, Multipart, Index } from 'oip-index';
+import { Artifact, Multipart, Index,} from 'oip-index';
 import inspect from './assets/imgs/inspect.svg';
 import ArtifactViewer from './ArtifactViewer.js';
 import MultipartViewer from './MultipartViewer.js';
@@ -33,20 +33,24 @@ class Lookup extends Component {
 	
 	async getMultiparts(txid){
 		var index = new Index();
-		let mps = await index.getMultiparts(txid)
-			index.getMultiparts(txid, function(mps){
-			var art = new Artifact(mps)
+		let mps = index.getMultiparts(txid)
+		console.log(mps)
+		var art = new Artifact(mps)
+		
+			console.log(art)
 			this.setState({
 				multiparts: mps,
 				artifact: art
+
+			
 			})
-		}, function(err){
-			console.error(err)
-		})
-
-
-
+			console.log(art)
 	}
+
+
+
+	
+
 	updateSearchText(event){
 		console.log(event.target.value)
 		this.setState({
@@ -59,18 +63,12 @@ class Lookup extends Component {
 		});
 	  }
 
-	  getArtifactFromID(value){
-		  this.setState({showBDC: true}) 
-        var self = this;
-		Artifact.getTXID(value, function(artifact){
-            console.log(`value ${artifact}`)
-            self.setState({
-                artifact: artifact
-            })
-        }, function(err){
-            console.error(err)
-        })
-	}
+	  async getArtifact(value){
+		var index = new Index();
+		 let art = await index.getArtifact(value)
+		  
+		  this.setState({showBDC: true, artifact: art}) 
+	  }
 	
 	
 	render(){
@@ -108,10 +106,10 @@ class Lookup extends Component {
 			<label htmlFor="ArtifactLookup" className="col-form-label" style={{marginRight:"10px"}}>Artifact ID:</label>
   				<input onChange={this.updateSearchText} type="text" className="form-control"/>
   				<div className="input-group-append">
-    				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ (event) => this.getMultiparts(this.state.searchText)}>
+    				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ () => this.getMultiparts(this.state.searchText)}>
 					</input>
 					
-					<input type="image" name="download" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifactFromID(this.state.searchText); gobottom()} }></input>
+					<input type="image" name="download" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifact(this.state.searchText); gobottom()} }></input>
   				</div>
 			</div>
 
@@ -122,14 +120,14 @@ class Lookup extends Component {
 		
 			<h3 className="text-center">Multiparts</h3>
 			{
-				this.state.multiparts.map(function(mp, i){
+				this.state.multiparts.concat(function(mp, i){
 					if (mp instanceof Multipart)
 						return <MultipartViewer key={i} multipart={mp} />
 				})
 			}
 			 <ToggleDisplay if = {this.state.showBDC}>
 			 <ScrollToBottom className="DisplayArts">
-			 {this.state.searchText ? <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.searchText}/> : "" }
+			  <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.searchText}/>
 			 </ScrollToBottom>
 			 </ToggleDisplay>
 

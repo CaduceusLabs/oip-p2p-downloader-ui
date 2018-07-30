@@ -56,7 +56,7 @@ class BulkDownloadContainer extends Component {
             tmpSelected.splice(i, 1)
         }
 
-        console.log("onFileSelectd", tmpSelected, selected, index)
+        console.log("onFileSelected", tmpSelected, selected, index)
 
         this.setState({
             selectedFiles: tmpSelected
@@ -86,17 +86,12 @@ class BulkDownloadContainer extends Component {
        
     }
     render(){
-       //  console.log(this.props.artifact)
-        var value;
-
-        if (this.props.artifact){
-            value = this.props.artifact;
-        } else {
-			value = new Artifact();
-		}
-    
+         console.log(this.props.artifact)
+     
+		
+    var art = this.props.artifact;
         var selectedFiles = [];
-        var files = value.getFiles();
+        var files = art.getClassName();
         
 
         var totalDownloadSize = 0;
@@ -115,8 +110,8 @@ class BulkDownloadContainer extends Component {
             </div>
             <div class="card">
                 <div class="card-header">
-                        <p className="OpenFolder"><img width="30" height="30" src={Folder} style={{marginRight:"10px"}}/>{value.getTitle()}</p>
-                        <p className="ArtDownloadAmount">{value.getFiles().length} {} in Artifact</p>
+                        <p className="OpenFolder"><img width="30" height="30" src={Folder} style={{marginRight:"10px"}}/>{art.getTitle()}</p>
+                        <p className="ArtDownloadAmount">{art.getFiles().length} {} in Artifact</p>
                         <p className="ArtSelectDownload">Selected: {this.state.selectedFiles.length} file(s) | {filesize(totalDownloadSize)} </p>
                 </div>
                 <div className="card-body">
@@ -133,7 +128,7 @@ class BulkDownloadContainer extends Component {
                         </thead>
                         <tbody> 	
                         {
-	                        value.getFiles().map((file, i) => {
+	                        art.getFiles().map((file, i) => {
 		                        return <DownloadFileList key={i} fileIndex={i} file={file} onFileSelectChange={this.onFileSelect} />
 				            })
 			            }
