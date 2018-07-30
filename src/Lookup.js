@@ -33,7 +33,7 @@ class Lookup extends Component {
 	
 	async getMultiparts(txid){
 		var index = new Index();
-		let mps = index.getMultiparts(txid)
+		let mps = await index.getMultiparts(txid)
 		console.log(mps)
 		var art = new Artifact(mps)
 		
@@ -120,7 +120,7 @@ class Lookup extends Component {
 		
 			<h3 className="text-center">Multiparts</h3>
 			{
-				this.state.multiparts.concat(function(mp, i){
+				this.state.multiparts.map(function(mp, i){
 					if (mp instanceof Multipart)
 						return <MultipartViewer key={i} multipart={mp} />
 				})

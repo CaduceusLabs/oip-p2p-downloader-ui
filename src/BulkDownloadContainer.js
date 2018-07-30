@@ -91,7 +91,7 @@ class BulkDownloadContainer extends Component {
 		
     var art = this.props.artifact;
         var selectedFiles = [];
-        var files = art.getClassName();
+        var files = art.getFiles();
         
 
         var totalDownloadSize = 0;
