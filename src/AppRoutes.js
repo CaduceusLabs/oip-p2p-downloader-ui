@@ -8,7 +8,6 @@ import DownloadFileList from './DownloadFileList.js';
 import BdcWrapper from './BdcWrapper.js';
 import oip from './oip.svg';
 import Lookup from './Lookup.js';
-import Artifact from './ArtifactInspec';
 
 class AppRoutes extends Component {
   render() {
@@ -26,7 +25,6 @@ class AppRoutes extends Component {
 </nav>
 					
           <Route exact path='/' render={props => <Lookup Core={this.props.Core}{...props} />} />
-          <Route path="/artInspec" render={props => <Artifact Core={this.props.Core} {...props} />} />
 
 
     </div>
