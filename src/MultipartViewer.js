@@ -5,17 +5,11 @@ class MultipartViewer extends Component {
 	render(){
 		var mp;
 
-		if (!this.props.multipart){
-			if (this.props.multipartString) {
-				var tmpMp = new Multipart();
-				tmpMp.fromString(this.props.multipartString)
-				mp = tmpMp;
-			} else {
-				mp = new Multipart();
-			}
-		} else {
+	
+		
+		
 			mp = this.props.multipart;
-		}
+
 		
 		return(
 			<div className="card" style={{marginTop:"20px"}}>

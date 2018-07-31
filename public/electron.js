@@ -199,6 +199,7 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
 
 
     var filesToDownload = newArtifact.getFiles();
+    var i = filesToDownload;
     for (i = 0; i < filesToDownload.length; i++) {
 
         var newFile = new ArtifactFile(undefined, newArtifact)
@@ -211,18 +212,18 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
             }
             return
         }
+        
 
 
-
-        if (newFile.includes(i)) {
+        if (selectedFiles.includes(i)) {
             selectedFolder = dialog.showOpenDialog({
                 defaultPath: __dirname,
                 properties: ["openDirectory"]
             })
-
+            
             selectedFolder !== undefined ?
                 download_Location = selectedFolder[0] : "./data"
-
+    
             var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
             console.log(filePath)
 
@@ -233,9 +234,9 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
         }
     }
 
-});
-process.on('SIGINT', function () {
-    console.log(" Shutting down IPFS Node");
-    dl.shutdown();
-    process.exit();
+    });
+    process.on('SIGINT', function () {
+        console.log(" Shutting down IPFS Node");
+        dl.shutdown();
+        process.exit();
 })

@@ -5,17 +5,14 @@ class ArtifactViewer extends Component {
 	render(){
 		var art;
 
+		console.log(this.props.artifact)
+		
 		if (this.props.artifact){
 			art = this.props.artifact;
 		} else if (this.props.artifactString) {
 			var tmpArt = new Artifact();
 			tmpArt.fromJSON(JSON.parse(this.props.artifactString))
 			art = tmpArt;
-
-
-			
-		} else {		
-			art = new Artifact();
 		}
 
 		return(
