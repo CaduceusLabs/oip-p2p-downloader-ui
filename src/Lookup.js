@@ -9,6 +9,7 @@ import BulkDownloadContainer from './BulkDownloadContainer.js';
 import download from './assets/imgs/arrow-down.svg';
 import './Lookup.css'
 import ScrollToBottom from 'react-scroll-to-bottom';
+import Loader from 'react-loader-spinner';
 
 
 class Lookup extends Component {
@@ -18,7 +19,8 @@ class Lookup extends Component {
 		this.state = {
 			multiparts: [],
 			artifact: undefined,
-			showBDC: false
+			showBDC: false,
+			showLoader: false
 
 
 			
@@ -32,6 +34,9 @@ class Lookup extends Component {
 	}
 	
 	async getMultiparts(txid){
+       this.setState({
+		   showLoader: true
+	   })
 		var index = new Index();
 		let mps = await index.getMultiparts(txid)
 		console.log(mps)
@@ -40,8 +45,8 @@ class Lookup extends Component {
 			console.log(art)
 			this.setState({
 				multiparts: mps,
-				artifact: art
-
+				artifact: art,
+				showLoader: false
 			
 			})
 			console.log(art)
@@ -59,7 +64,8 @@ class Lookup extends Component {
 	}
 	handleClick() {
 		this.setState({
-		  showBDC: !this.state.showBDC
+		  showBDC: !this.state.showBDC,
+		  showLoader: !this.state.showLoader
 		});
 	  }
 
@@ -72,10 +78,6 @@ class Lookup extends Component {
 	
 	
 	render(){
-		// var x = document.documentElement.nodeName;
-		// var documentHeight=x.offsetHeight;
-		// var viewportHeight=window.innerHeight;
-		// window.scrollTo(0, documentHeight-viewportHeight);
 		
 					window.onscroll = function() {scrollFunction()};
 					function scrollFunction() {
@@ -101,14 +103,15 @@ class Lookup extends Component {
 		return(
 			
 		<div className="container">
+
+
 		<input type="button" value="Top" id="myBtn" onClick={() => {topFunction()}}/> 
 			<div className="input-group row">
 			<label htmlFor="ArtifactLookup" className="col-form-label" style={{marginRight:"10px"}}>Artifact ID:</label>
   				<input onChange={this.updateSearchText} type="text" className="form-control"/>
   				<div className="input-group-append">
     				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ () => this.getMultiparts(this.state.searchText)}>
-					</input>
-					
+					</input>					
 					<input type="image" name="download" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifact(this.state.searchText); gobottom()} }></input>
   				</div>
 			</div>
@@ -119,6 +122,15 @@ class Lookup extends Component {
 			{this.state.artifact ? <ArtifactViewer artifact={this.state.artifact} /> : ""}
 		
 			<h3 className="text-center">Multiparts</h3>
+			<ToggleDisplay if = {this.state.showLoader}>
+					<Loader 
+	     type="Puff"
+	     color="#00BFFF"
+	     height="100"	
+	     width="100" 
+		 />   
+		 
+					</ToggleDisplay>
 			{
 				this.state.multiparts.map(function(mp, i){
 					if (mp instanceof Multipart)
