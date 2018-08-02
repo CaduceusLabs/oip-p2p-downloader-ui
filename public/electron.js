@@ -208,7 +208,7 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
         if (newFile.isPaid() !== false) {
             event.returnValue = {
                 "success": false,
-                "reason": "Paid File features coming soon"
+                "reason": "Cannot be downloaded, Payment required. This functionality is coming soon!"
             }
             return
         }

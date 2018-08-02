@@ -105,7 +105,8 @@ class BulkDownloadContainer extends Component {
            <div>
            <div>
     
-                        <ToastContainer/>
+                        <ToastContainer
+                        autoClose={false}/>
              
             </div>
             <div class="card">

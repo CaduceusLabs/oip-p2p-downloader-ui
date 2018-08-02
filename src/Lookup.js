@@ -122,6 +122,7 @@ class Lookup extends Component {
 			{this.state.artifact ? <ArtifactViewer artifact={this.state.artifact} /> : ""}
 		
 			<h3 className="text-center">Multiparts</h3>
+			<div className="text-center">
 			<ToggleDisplay if = {this.state.showLoader}>
 					<Loader 
 	     type="Puff"
@@ -131,6 +132,7 @@ class Lookup extends Component {
 		 />   
 		 
 					</ToggleDisplay>
+					</div>
 			{
 				this.state.multiparts.map(function(mp, i){
 					if (mp instanceof Multipart)
