@@ -110,9 +110,9 @@ class Lookup extends Component {
 			<label htmlFor="ArtifactLookup" className="col-form-label" style={{marginRight:"10px"}}>Artifact ID:</label>
   				<input onChange={this.updateSearchText} type="text" className="form-control"/>
   				<div className="input-group-append">
-    				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ () => this.getMultiparts(this.state.searchText)}>
+    				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ () => this.getMultiparts(this.state.searchText)} alt="">
 					</input>					
-					<input type="image" name="download" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifact(this.state.searchText); gobottom()} }></input>
+					<input type="image" name="download" alt="" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifact(this.state.searchText); gobottom()} }></input>
   				</div>
 			</div>
 

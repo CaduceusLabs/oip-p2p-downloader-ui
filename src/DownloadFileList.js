@@ -69,6 +69,12 @@ class DownloadFileList extends Component {
           fileImage = Audio;
           else if(extension === "txt")
           fileImage = Text;
+          else if(extension === "zip")
+          fileImage = Zip;
+          else if(extension === "pdf")
+          fileImage = Pdf;
+          else if(extension === "js" || extension === "html" || extension === "css")
+          fileImage = Code;
         else
           fileImage = File;
       
