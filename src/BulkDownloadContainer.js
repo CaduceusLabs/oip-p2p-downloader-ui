@@ -31,22 +31,11 @@ class BulkDownloadContainer extends Component {
             })
         }
         
-
-    
-    // In renderer process (web page).
   
 
     onFileSelect(selected, index){
         console.log("Index", index)
-        // setState, change selectedFiles Array based on `selected` variable and index
-
-        // Get array from state
-        // Create temp variable to store changes we need to make to the selectedFiles array
         var tmpSelected = this.state.selectedFiles;
-
-        // If selected is true
-            // If index is in tmpSelected array
-                // If index is not, then add the index to the tmpSelected array
 
         let i = tmpSelected.indexOf(index)
         if (selected === true && i === -1) {
@@ -56,7 +45,6 @@ class BulkDownloadContainer extends Component {
             tmpSelected.splice(i, 1)
         }
 
-        console.log("onFileSelected", tmpSelected, selected, index)
 
         this.setState({
             selectedFiles: tmpSelected
@@ -122,7 +110,7 @@ class BulkDownloadContainer extends Component {
                             <tr>
                                 <th scope="col"></th>
                                 <th scope="col" style= {{maxWidth:"10px"}}></th>
-                                <th scope="col">Filename</th>
+                                <th scope="co            l">Filename</th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Size</th>
                             </tr>

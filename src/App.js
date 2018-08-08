@@ -7,7 +7,6 @@ import AppRoutes from './AppRoutes.js';
 import './assets/css/bootstrap.min.css';
 import { Index } from 'oip-index';
 
-console.log("app.js")
 
 let Core = new Index();
 

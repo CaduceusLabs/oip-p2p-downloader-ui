@@ -5,6 +5,7 @@ const path = require('path');
 const url = require('url');
 const isDev = require('electron-is-dev');
 const ipc = require('electron').ipcMain
+const windowManager = require('electron-window-manager');
 const {
     IpfsConnector
 } = require('@akashaproject/ipfs-connector')
@@ -41,6 +42,12 @@ function createWindow() {
 
 
 }
+    // DownloadContainer = new BrowserWindow({
+    //     name: 'Download Artifact',
+    //     width: 1000,
+    //     height: 400,
+    // });
+    // window.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
 
 class Downloader {
     constructor() {
@@ -68,15 +75,15 @@ class Downloader {
 
     download(artifact_ID, download_Location) {
 
-        console.log('ready')
+   
         return new Promise((resolve, reject) => {
             var attemptDownload = () => {
-                console.log('delay?')
+           
                 if (!this._ipfs_ready) {
                     setTimeout(attemptDownload, 1000)
                     return
                 }
-                console.log('ready')
+         
 
                 if (!artifact_ID)
                     reject(new Error("Artifact ID is undefined!"))
@@ -84,8 +91,7 @@ class Downloader {
 
                 this.Index.getArtifact(artifact_ID)
                     .then(artifact => {
-                        // on success
-                        console.log(artifact);
+                        
 
                         var filesToDownload = artifact.getFiles();
                         var i = filesToDownload;
@@ -93,10 +99,10 @@ class Downloader {
                             var filePath = '/ipfs/' + (artifact.getLocation() + '/' + filesToDownload[i].getFilename());
 
                             this.downloadFile(filePath, download_Location + '/' + filesToDownload[i].getFilename()).then((info) => {
-                                console.log(info);
+                
                             })
                         }
-                        console.log(download_Location)
+       
                     })
                     .catch(error => {
                         reject(error)
@@ -126,8 +132,7 @@ class Downloader {
                     return
                 }
                 totalBytes = stats.size;
-                console.log(filePath)
-                var stream = this._ipfs.api.apiClient.files.catReadableStream(filePath)
+                 var stream = this._ipfs.api.apiClient.files.catReadableStream(filePath)
 
 
 
@@ -189,11 +194,15 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
     if (mainWindow === null) {
         createWindow();
+        windowManager.init({
+            'onLoadFailure': function(window){
+                window.loadURL('/404.html');
+            }
+        })
     }
 });
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
-
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
 
@@ -204,7 +213,7 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
 
         var newFile = new ArtifactFile(undefined, newArtifact)
         Object.assign(newFile, filesToDownload[i])
-        console.log(newFile)
+     
         if (newFile.isPaid() !== false) {
             event.returnValue = {
                 "success": false,
