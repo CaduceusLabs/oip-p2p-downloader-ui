@@ -8,7 +8,8 @@ import DownloadFileList from './DownloadFileList.js';
 import BdcWrapper from './BdcWrapper.js';
 import oip from './oip.svg';
 import Lookup from './Lookup.js';
-import Loader from './Loader.js'
+import Art from './Art.js';
+
 
 class AppRoutes extends Component {
   render() {
