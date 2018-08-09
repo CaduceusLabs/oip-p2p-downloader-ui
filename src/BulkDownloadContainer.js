@@ -27,11 +27,9 @@ class BulkDownloadContainer extends Component {
                 this.toastId = toast("I cannot be duplicated !");
                 
                 
-              }
-            })
-        }
-        
-  
+            }
+        })
+    }
 
     onFileSelect(selected, index){
         console.log("Index", index)
@@ -46,8 +44,13 @@ class BulkDownloadContainer extends Component {
         }
 
 
+
         this.setState({
             selectedFiles: tmpSelected
+
+        })
+        ipcRenderer.emit("Index", function (event, index){
+            event.sender.send("Index", this.state.selectedFiles)
         })
     }
     downloadSelectedFiles() {

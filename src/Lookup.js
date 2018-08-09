@@ -10,6 +10,8 @@ import download from './assets/imgs/arrow-down.svg';
 import './Lookup.css'
 import ScrollToBottom from 'react-scroll-to-bottom';
 import Loader from 'react-loader-spinner';
+import Art from './Art.js'
+
 class Lookup extends Component {
 	constructor(props){
 		super(props);
@@ -18,7 +20,8 @@ class Lookup extends Component {
 			multiparts: [],
 			artifact: undefined,
 			showBDC: false,
-			showLoader: false
+			showLoader: false,
+			showSuite: false
 
 
 			
@@ -63,7 +66,8 @@ class Lookup extends Component {
 	handleClick() {
 		this.setState({
 		  showBDC: !this.state.showBDC,
-		  showLoader: !this.state.showLoader
+		  showLoader: !this.state.showLoader,
+		  showSuite: !this.state.showSuite
 		});
 	  }
 
@@ -71,7 +75,7 @@ class Lookup extends Component {
 		var index = new Index();
 		 let art = await index.getArtifact(value)
 		  
-		  this.setState({showBDC: true, artifact: art}) 
+		  this.setState({showBDC: true, showSuite: true, artifact: art}) 
 	  }
 	
 	
@@ -137,14 +141,18 @@ class Lookup extends Component {
 						return <MultipartViewer key={i} multipart={mp} />
 				})
 			}
+
 			*/}
+			
 			 <ToggleDisplay if = {this.state.showBDC}>
 			 <ScrollToBottom className="DisplayArts">
 			  <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.searchText}/>
 			 </ScrollToBottom>
 			 </ToggleDisplay>
 
-			
+			<ToggleDisplay if = {this.state.showSuite}>
+			<Art artifact={this.state.artifact} artID={this.state.searchText}/>
+			</ToggleDisplay>
 		
 		</div>
 		)

@@ -205,8 +205,9 @@ app.on('activate', () => {
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
-
-
+      //  event.sender.send('ArtTest', this.state.selectedFiles)
+    
+    
     var filesToDownload = newArtifact.getFiles();
     var i = filesToDownload;
     for (i = 0; i < filesToDownload.length; i++) {
@@ -236,7 +237,9 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
             var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
             console.log(filePath)
 
-            dl.downloadFile(filePath, download_Location + '/' + newFile.getFilename()).then((info) => {})
+            dl.downloadFile(filePath, download_Location + '/' + newFile.getFilename()).then((info) => {
+                ipcMain.emit(artifact_ID, artifact)
+            })
             event.returnValue = {
                 "success": true
             }
