@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import glamorous from 'glamorous';
 import { Span } from 'glamorous'
 const {css} =  require('glamor');
+const electron = window.require('electron');
 const { ipcRenderer, remote } = window.require('electron');
 
 class BulkDownloadContainer extends Component {

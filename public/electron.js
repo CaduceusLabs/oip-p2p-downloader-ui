@@ -1,3 +1,4 @@
+
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -27,6 +28,7 @@ const {
 } = require('glamor')
 
 let mainWindow;
+let DlWindow;
 
 
 function createWindow() {
@@ -35,8 +37,21 @@ function createWindow() {
         width: 1200,
         height: 680
     });
+    DlWindow = new BrowserWindow({
+        width: 800,
+        height: 680,
+        parent: mainWindow,
+        show: false
+    });
     mainWindow.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
+    DlWindow.loadURL(isDev ? 'http://localhost:3000/download' : `file://${path.join(__dirname, '../build/index.html')}`);
+
     mainWindow.on('closed', () => mainWindow = null);
+    DlWindow.on('close', (e) => {
+        e.preventDefault();
+        DlWindow.hide();
+    })
+
 
     dl = new Downloader()
 
@@ -203,6 +218,8 @@ app.on('activate', () => {
 });
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
+   DlWindow.show();
+   DlWindow.webContents.send('DL-File', (event, artifact,selectedFiles));
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
       //  event.sender.send('ArtTest', this.state.selectedFiles)
