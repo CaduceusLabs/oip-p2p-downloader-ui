@@ -73,9 +73,12 @@ class Lookup extends Component {
 
 	  async getArtifact(value){
 		var index = new Index();
+		this.setState({
+			showLoader:true
+		})
 		 let art = await index.getArtifact(value)
 		  
-		  this.setState({showBDC: true, showSuite: true, artifact: art}) 
+		  this.setState({showBDC: true, showSuite: true, artifact: art, showLoader:false}) 
 	  }
 	
 	
@@ -111,16 +114,24 @@ class Lookup extends Component {
 			<div className="input-group row">
 			<label htmlFor="ArtifactLookup" className="col-form-label" style={{marginRight:"10px"}}>Artifact ID:</label>
   				<input onChange={this.updateSearchText} type="text" className="form-control"/>
-  				<div className="input-group-append">
-    				<input type="image" name="inspect" src={inspect} width="30" height="30" style={{margin:"10px"}} onClick={ () => this.getMultiparts(this.state.searchText)} alt="">
-					</input>					
+  				<div className="input-group-append">				
 					<input type="image" name="download" alt="" width="30" height="30" style={{margin:"10px"}} src={download} onClick={ () => {this.getArtifact(this.state.searchText); gobottom()} }></input>
   				</div>
 			</div>
 
 			<hr />
-			{/*
-			<h3 className="text-center" style={{marginTop:"20px"}}>Artifact</h3>
+
+			<ToggleDisplay if = {this.state.showLoader}>
+					<Loader 
+	     type="Puff"
+	     color="#00BFFF"
+	     height="100"	
+		 width="100" 
+		 />   
+		 
+					</ToggleDisplay>
+			
+			{/* <h3 className="text-center" style={{marginTop:"20px"}}>Artifact</h3>
 			{this.state.artifact ? <ArtifactViewer artifact={this.state.artifact} /> : ""}
 		
 			<h3 className="text-center">Multiparts</h3>
@@ -140,19 +151,13 @@ class Lookup extends Component {
 					if (mp instanceof Multipart)
 						return <MultipartViewer key={i} multipart={mp} />
 				})
-			}
-
-			*/}
+			} */}
 			
 			 <ToggleDisplay if = {this.state.showBDC}>
 			 <ScrollToBottom className="DisplayArts">
 			  <BulkDownloadContainer artifact={this.state.artifact} artID={this.state.searchText}/>
 			 </ScrollToBottom>
 			 </ToggleDisplay>
-
-			<ToggleDisplay if = {this.state.showSuite}>
-			<Art artifact={this.state.artifact} artID={this.state.searchText}/>
-			</ToggleDisplay>
 		
 		</div>
 		)
