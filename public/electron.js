@@ -216,6 +216,9 @@ app.on('activate', () => {
         })
     }
 });
+ipcMain.on('toggle-Art', (event, arg) => {
+    DlWindow.show();
+})
 
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
    DlWindow.show();

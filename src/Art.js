@@ -8,7 +8,7 @@ import Down from "./assets/imgs/arrow-down.svg";
 import { Artifact } from "oip-index";
 const { ipcRenderer, remote } = window.require('electron');
 
-class ArtSuite extends Component {
+class Art extends Component {
     constructor(props) {
         super(props);
 
@@ -95,4 +95,4 @@ class ArtSuite extends Component {
     }
 }
 
-export default ArtSuite;
+export default Art;
