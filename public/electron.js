@@ -27,6 +27,7 @@ const {
     css
 } = require('glamor')
 
+
 let mainWindow;
 let DlWindow;
 
@@ -35,7 +36,9 @@ function createWindow() {
     console.error("CreateWindow Got Called")
     mainWindow = new BrowserWindow({
         width: 1200,
-        height: 680
+        height: 680,
+        title: 'ElectronApp', 
+        icon:  __dirname + '../src/oip.svg'
     });
     DlWindow = new BrowserWindow({
         width: 800,
@@ -133,7 +136,7 @@ class Downloader {
     }
 
 
-    downloadFile(filePath, download_Location) {
+    downloadFile(artifact, file, filePath, download_Location, onProgress) {
         console.log(filePath, download_Location)
         return new Promise((resolve, reject) => {
 
@@ -181,8 +184,11 @@ class Downloader {
                         stream.on('error', (err) => {
                             console.error(err)
                         }).on('data', (data) => {
-
-                            var bounce = downloadedBytes += data.length;
+                            downloadedBytes += data.length
+                            onProgress(artifact, file, {
+                                downloaded: downloadedBytes,
+                                total: totalBytes
+                            })
                             progressBar.value = Math.round(downloadedBytes / totalBytes * 100)
 
 
@@ -197,6 +203,24 @@ class Downloader {
         })
     }
 }
+
+var artifact_download_state = {
+    "12345": {
+        downloaded: 1234,
+        total: 5000
+    },
+    "54321": {
+        downloaded: 1234,
+        total: 5000
+    }
+}
+
+// var artifact_id = "12345"
+
+// artifact_download_state[artifact_id] = {
+//     downloaded: 1234,
+//     total: 5000
+// }
 
 
 
@@ -223,10 +247,12 @@ ipcMain.on('toggle-Art', (event, arg) => {
 ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
    DlWindow.show();
    DlWindow.webContents.send('DL-File', (event, artifact,selectedFiles));
+   
     var newArtifact = new Artifact()
     Object.assign(newArtifact, artifact)
       //  event.sender.send('ArtTest', this.state.selectedFiles)
-    
+
+    artifact_download_state[newArtifact.getTXID()] = {}
     
     var filesToDownload = newArtifact.getFiles();
     var i = filesToDownload;
@@ -235,6 +261,14 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
         var newFile = new ArtifactFile(undefined, newArtifact)
         Object.assign(newFile, filesToDownload[i])
      
+        if (newFile === undefined){
+            event.returnValue = {
+                "success": false,
+                "reason": "Artifact was never searched"
+            }
+            return
+        } 
+
         if (newFile.isPaid() !== false) {
             event.returnValue = {
                 "success": false,
@@ -242,6 +276,8 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
             }
             return
         }
+
+        artifact_download_state[newArtifact.getTXID()][newFile.getFilename()] = {}
         
 
 
@@ -257,7 +293,11 @@ ipcMain.on('downloadFile', (event, artifact, selectedFiles) => {
             var filePath = '/ipfs/' + (newArtifact.getLocation() + '/' + newFile.getFilename());
             console.log(filePath)
 
-            dl.downloadFile(filePath, download_Location + '/' + newFile.getFilename()).then((info) => {
+            dl.downloadFile(newArtifact, newFile, filePath, download_Location + '/' + newFile.getFilename(), function(artifact, file, progress_object){
+                artifact_download_state[artifact.getTXID()][file.getFilename()] = progress_object
+
+                console.log(artifact_download_state)
+            }).then((info) => {
                 ipcMain.emit(artifact_ID, artifact)
             })
             event.returnValue = {

@@ -60,6 +60,8 @@ class BulkDownloadContainer extends Component {
          console.log(this.props.artifact)
          console.log(this.state.selectedFiles)
 
+         // if (files === )
+
        var  dlStatus = ipcRenderer.sendSync("downloadFile", this.props.artifact, this.state.selectedFiles,)
         if (dlStatus.success === false) {
             toast(dlStatus.reason),{
